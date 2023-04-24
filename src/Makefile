@@ -5,12 +5,16 @@
 #
 
 CUDA_HOME ?= /usr/local/cuda
+NCCL_HOME ?= /usr/
 PREFIX ?= /usr/local
 VERBOSE ?= 0
 DEBUG ?= 0
 
 CUDA_LIB ?= $(CUDA_HOME)/lib64
 CUDA_INC ?= $(CUDA_HOME)/include
+NCCL_LIB ?= $(NCCL_HOME)/lib
+NCCL_LIB64 ?= $(NCCL_HOME)/lib64
+NCCL_INC ?= $(NCCL_HOME)/include
 NVCC ?= $(CUDA_HOME)/bin/nvcc
 CUDARTLIB ?= cudart
 
@@ -37,8 +41,8 @@ endif
 NVCUFLAGS  := -ccbin $(CXX) $(NVCC_GENCODE) -std=c++11
 CXXFLAGS   := -std=c++11
 
-LDFLAGS    := -L${CUDA_LIB} -lcudart -lrt
-NVLDFLAGS  := -L${CUDA_LIB} -l${CUDARTLIB} -lrt
+LDFLAGS    := -L${CUDA_LIB} -L${NCCL_LIB} -L${NCCL_LIB64} -lcudart -lrt
+NVLDFLAGS  := -L${CUDA_LIB} -L${NCCL_LIB} -L${NCCL_LIB64} -l${CUDARTLIB} -lrt
 
 ifeq ($(DEBUG), 0)
 NVCUFLAGS += -O3 -g
